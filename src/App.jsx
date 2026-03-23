@@ -20,11 +20,11 @@ function evaluate({ mustHit, current, cap, qualifies, recentReset }) {
   const warnings = [];
   if (qualifies === "no") warnings.push("Bet may not qualify");
   if (recentReset === "yes") warnings.push("Recently reset");
-  if (qualifies === "no") return { rec: "SKIP", pct, reason: "Your bet may not qualify for the jackpot. Confirm bet requirements before playing.", warnings };
-  if (recentReset === "yes") return { rec: "SKIP", pct, reason: "This machine appears recently reset. Skip and look for a more mature jackpot.", warnings };
-  if (pct >= 95) return { rec: "PLAY", pct, reason: "Valid must-hit-by setup and very close to cap. Strong candidate.", warnings };
-  if (pct >= 90) return { rec: "MAYBE", pct, reason: "Borderline. Close to cap but not at peak threshold. Weigh your bankroll.", warnings };
-  return { rec: "SKIP", pct, reason: "Too far from the cap to justify play at this time.", warnings };
+  if (qualifies === "no") return { rec: "SKIP", pct, reason: "Your bet may not qualify for the major prize. Confirm bet requirements before playing.", warnings };
+  if (recentReset === "yes") return { rec: "SKIP", pct, reason: "This machine appears recently reset. Skip and look for a more mature major prize.", warnings };
+  if (pct >= 95) return { rec: "PLAY", pct, reason: "Valid must-hit-by setup and very close to the major prize cap. Strong candidate.", warnings };
+  if (pct >= 90) return { rec: "MAYBE", pct, reason: "Borderline. Close to the major prize cap but not at peak threshold. Weigh your bankroll.", warnings };
+  return { rec: "SKIP", pct, reason: "Too far from the major prize cap to justify play at this time.", warnings };
 }
 
 // ─── Seed Data ────────────────────────────────────────────────────────────────
@@ -365,7 +365,7 @@ function MachineCheck({ log, setLog, presets, settings }) {
         </div>
       </div>
 
-      <Field label="Bet qualifies for jackpot?">
+      <Field label="Bet qualifies for major prize?">
         <ToggleGroup options={[{ label: "Yes", value: "yes" }, { label: "No", value: "no" }, { label: "Unknown", value: "unknown" }]} value={f.qualifies} onChange={v => set("qualifies", v)} />
       </Field>
       <Field label="Looks recently reset?">
@@ -389,7 +389,7 @@ function MachineCheck({ log, setLog, presets, settings }) {
             <span style={s.recLabel(result.rec)}>{result.rec}</span>
             {result.pct !== null && (
               <div style={{ marginTop: 12 }}>
-                <div style={{ fontSize: 13, color: C.sub, marginBottom: 5 }}>Percent to cap</div>
+                <div style={{ fontSize: 13, color: C.sub, marginBottom: 5 }}>Percent to major prize cap</div>
                 <div style={{ fontSize: 30, fontWeight: 700, color: recColor }}>{fmtPct(result.pct)}</div>
                 <div style={{ ...s.progress, marginTop: 8 }}><div style={s.progressFill(result.pct, recColor)} /></div>
               </div>
@@ -415,9 +415,9 @@ function MachineCheck({ log, setLog, presets, settings }) {
 const TREE_Q = [
   { q: "Does it clearly say Must Hit By or Must Award By?", yes: 1, no: "WALK AWAY", noReason: "Only evaluate machines with clear must-hit-by language." },
   { q: "Can you see both the current amount and the cap?", yes: 2, no: "WALK AWAY", noReason: "You need both numbers to evaluate. Walk away." },
-  { q: "Is the jackpot at least 90% of the cap?", yes: 3, no: "WALK AWAY", noReason: "Under 90% is generally not worth the risk." },
-  { q: "Does your bet qualify for the jackpot?", yes: 4, no: "WALK AWAY", noReason: "If your bet doesn't qualify, you can't win the jackpot." },
-  { q: "Does the machine appear recently reset?", yes: "WALK AWAY", yesReason: "Recently reset machines are far from cap. Skip it.", no: "PLAY", noReason: "This machine passes all checks. It's a valid candidate." },
+  { q: "Is the current major prize at least 90% of the cap?", yes: 3, no: "WALK AWAY", noReason: "Under 90% of the major prize cap is generally not worth the risk." },
+  { q: "Does your bet qualify for the major prize?", yes: 4, no: "WALK AWAY", noReason: "If your bet doesn't qualify, you can't win the major prize." },
+  { q: "Does the machine appear recently reset?", yes: "WALK AWAY", yesReason: "Recently reset machines are far from the major prize cap. Skip it.", no: "PLAY", noReason: "This machine passes all checks. It's a valid candidate." },
 ];
 
 function QuickDecision() {
@@ -788,11 +788,11 @@ function CasinoPresets({ presets, setPresets }) {
 // ─── QUICK RULES ──────────────────────────────────────────────────────────────
 const RULES = [
   "Only play machines that clearly say Must Hit By or Must Award By",
-  "Always confirm both the current amount and the cap",
-  "95%+ of cap is the strongest candidate signal",
-  "90%–94.9% is borderline — weigh carefully",
-  "Under 90% is generally a skip",
-  "Confirm your bet qualifies for the jackpot",
+  "Always confirm both the current major prize amount and the cap",
+  "95%+ of the major prize cap is the strongest candidate signal",
+  "90%–94.9% of the major prize cap is borderline — weigh carefully",
+  "Under 90% of the major prize cap is generally a skip",
+  "Confirm your bet qualifies for the major prize",
   "Avoid machines that appear recently reset",
   "Set a per-machine budget before you sit",
   "Set a session stop-loss and stick to it",
@@ -864,7 +864,7 @@ function Settings({ settings, setSettings }) {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
         <div>
           <div style={{ fontSize: 15, fontWeight: 600 }}>OCR Photo Scanning</div>
-          <div style={{ fontSize: 12, color: C.sub }}>Attempt to read jackpot amounts from photos</div>
+          <div style={{ fontSize: 12, color: C.sub }}>Attempt to read major prize amounts from photos</div>
         </div>
         <button style={{ ...s.btnSm(settings.ocrEnabled !== false ? C.green : C.sub, settings.ocrEnabled !== false ? C.greenBg : "transparent"), minWidth: 56 }} onClick={() => setF("ocrEnabled", settings.ocrEnabled === false ? true : false)}>
           {settings.ocrEnabled !== false ? "ON" : "OFF"}
