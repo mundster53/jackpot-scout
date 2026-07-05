@@ -181,6 +181,7 @@ function Home({ setScreen, log, session, presets }) {
       <div style={{ marginBottom: 18 }}>
         <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: "-0.5px" }}>Jackpot Scout</div>
         <div style={{ fontSize: 13, color: C.sub, marginTop: 3 }}>Evaluate fast. Stay disciplined.</div>
+        <div style={{ fontSize: 12, color: C.accent, marginTop: 4, fontWeight: 600 }}>For must-hit-by / must-award-by progressive machines only</div>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
@@ -386,6 +387,7 @@ function MachineCheck({ log, setLog, presets, settings }) {
       {result && (
         <div style={{ marginTop: 20 }}>
           <div style={s.bigRec(result.rec)}>
+            <div style={{ fontSize: 11, color: C.sub, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 8 }}>Must-Hit-By Progressive Machines Only</div>
             <span style={s.recLabel(result.rec)}>{result.rec}</span>
             {result.pct !== null && (
               <div style={{ marginTop: 12 }}>
@@ -802,6 +804,9 @@ const RULES = [
 function QuickRules() {
   return (
     <div style={s.screen}>
+      <div style={{ background: C.accent + "22", border: `1px solid ${C.accent}`, borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
+        <div style={{ fontSize: 13, color: C.accent, fontWeight: 700, lineHeight: 1.5 }}>This app is for must-hit-by / must-award-by progressive machines only.</div>
+      </div>
       <div style={s.card}>
         {RULES.map((r, i) => (
           <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "11px 0", borderBottom: i < RULES.length - 1 ? `1px solid ${C.border}` : "none" }}>
